@@ -38,3 +38,16 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### 환경 설정 (민감 정보 보호) ###
+application-local.yml
+.env
+.env.*
+!.env.example
+
+### Mac ###
+.DS_Store
+
+### 로그 ###
+*.log
+logs/
