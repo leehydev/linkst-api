@@ -28,6 +28,13 @@ class GlobalExceptionHandler {
             .body(ErrorResponse(e.message ?: "접근 권한이 없습니다", "FORBIDDEN"))
     }
 
+    @ExceptionHandler(IllegalStateException::class)
+    fun handleBadRequest(e: IllegalStateException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse(e.message ?: "잘못된 요청입니다", "BAD_REQUEST"))
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidation(e: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
         val message = e.bindingResult.fieldErrors
