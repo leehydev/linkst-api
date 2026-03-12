@@ -14,16 +14,22 @@ import java.util.UUID
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
-abstract class BaseEntity (
+abstract class BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L
+
+    @Column(name = "public_id", nullable = false, unique = true, updatable = false)
+    val publicId: UUID = UUID.randomUUID()
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    var createdAt: LocalDateTime = LocalDateTime.now()
+        protected set
 
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID = UUID.randomUUID()
-)
+    var updatedAt: LocalDateTime = LocalDateTime.now()
+        protected set
+}

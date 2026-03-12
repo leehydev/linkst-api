@@ -1,0 +1,11 @@
+tunnel: cc3ea9dd-20fb-4d2b-bca9-ea724b103050
+credentials-file: /Users/mary/.cloudflared/cc3ea9dd-20fb-4d2b-bca9-ea724b103050.json
+
+ingress:
+  - hostname: "api-dev.linkst.kr"
+    service: http://localhost:8080
+
+  - hostname: "dev.linkst.kr"
+    service: http://localhost:3000
+
+  - service: http_status:404
