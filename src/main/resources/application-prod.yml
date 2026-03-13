@@ -22,3 +22,8 @@ kakao:
 jwt:
   secret: ${JWT_SECRET}
   expiration: 86400000
+
+app:
+  base-url: https://app.linkst.kr
+  cors:
+    allowed-origins: https://app.linkst.kr

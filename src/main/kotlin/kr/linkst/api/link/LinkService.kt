@@ -5,6 +5,7 @@ import kr.linkst.api.link.dto.CreateLinkRequest
 import kr.linkst.api.link.dto.LinkResponse
 import kr.linkst.api.link.dto.UpdateLinkRequest
 import kr.linkst.api.user.User
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,7 +13,8 @@ import java.util.UUID
 
 @Service
 class LinkService(
-    private val linkRepository: LinkRepository
+    private val linkRepository: LinkRepository,
+    @Value("\${app.base-url}") private val baseUrl: String
 ) {
     companion object {
         private const val SLUG_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -31,7 +33,7 @@ class LinkService(
         )
 
         val savedLink = linkRepository.save(link)
-        return LinkResponse.from(savedLink)
+        return LinkResponse.from(savedLink, baseUrl)
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +41,7 @@ class LinkService(
         val pageable = PageRequest.of(page, size)
         val linkPage = linkRepository.findByUserIdOrderByCreatedAtDesc(user.id, pageable)
 
-        return PageResponse.from(linkPage) { LinkResponse.from(it) }
+        return PageResponse.from(linkPage) { LinkResponse.from(it, baseUrl) }
     }
 
     @Transactional(readOnly = true)
@@ -51,7 +53,7 @@ class LinkService(
             throw IllegalAccessException("접근 권한이 없습니다")
         }
 
-        return LinkResponse.from(link)
+        return LinkResponse.from(link, baseUrl)
     }
 
     @Transactional
@@ -66,7 +68,7 @@ class LinkService(
         request.title?.let { link.title = it }
         request.isActive?.let { link.isActive = it }
 
-        return LinkResponse.from(link)
+        return LinkResponse.from(link, baseUrl)
     }
 
     @Transactional
